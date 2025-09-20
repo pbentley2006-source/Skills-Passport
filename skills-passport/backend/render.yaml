@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: skills-passport-backend
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npx ts-node src/simple-server.ts
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: OPENAI_API_KEY
+        sync: false

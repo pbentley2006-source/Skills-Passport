@@ -1,0 +1,246 @@
+{
+  "technical_skills": {
+    "programming": [
+      {
+        "onet_code": "2.B.1.a",
+        "name": "JavaScript",
+        "category": "TECHNICAL",
+        "subcategory": "Programming Languages",
+        "description": "Client-side and server-side programming language",
+        "related_terms": ["JS", "Node.js", "React", "Vue", "Angular", "ECMAScript"],
+        "proficiency_indicators": {
+          "beginner": ["basic syntax", "DOM manipulation", "simple functions"],
+          "intermediate": ["async/await", "ES6+", "frameworks", "API integration"],
+          "advanced": ["performance optimization", "design patterns", "full-stack development"],
+          "expert": ["architecture design", "mentoring", "complex algorithms"]
+        }
+      },
+      {
+        "onet_code": "2.B.1.b",
+        "name": "Python",
+        "category": "TECHNICAL",
+        "subcategory": "Programming Languages",
+        "description": "High-level programming language for various applications",
+        "related_terms": ["Django", "Flask", "NumPy", "Pandas", "Machine Learning", "Data Science"],
+        "proficiency_indicators": {
+          "beginner": ["basic syntax", "data types", "loops", "functions"],
+          "intermediate": ["OOP", "libraries", "web frameworks", "data analysis"],
+          "advanced": ["machine learning", "optimization", "system design"],
+          "expert": ["architecture", "performance tuning", "team leadership"]
+        }
+      },
+      {
+        "onet_code": "2.B.1.c",
+        "name": "Java",
+        "category": "TECHNICAL",
+        "subcategory": "Programming Languages",
+        "description": "Object-oriented programming language",
+        "related_terms": ["Spring", "Hibernate", "Maven", "Gradle", "JVM", "Android"],
+        "proficiency_indicators": {
+          "beginner": ["basic syntax", "OOP concepts", "collections"],
+          "intermediate": ["frameworks", "database integration", "testing"],
+          "advanced": ["microservices", "performance optimization", "design patterns"],
+          "expert": ["architecture design", "JVM tuning", "team leadership"]
+        }
+      }
+    ],
+    "databases": [
+      {
+        "onet_code": "2.B.2.a",
+        "name": "SQL",
+        "category": "TECHNICAL",
+        "subcategory": "Database Management",
+        "description": "Structured Query Language for database operations",
+        "related_terms": ["MySQL", "PostgreSQL", "SQL Server", "Oracle", "Database Design"],
+        "proficiency_indicators": {
+          "beginner": ["basic queries", "SELECT statements", "simple joins"],
+          "intermediate": ["complex joins", "subqueries", "stored procedures"],
+          "advanced": ["query optimization", "indexing", "database design"],
+          "expert": ["performance tuning", "architecture", "data modeling"]
+        }
+      },
+      {
+        "onet_code": "2.B.2.b",
+        "name": "NoSQL",
+        "category": "TECHNICAL",
+        "subcategory": "Database Management",
+        "description": "Non-relational database technologies",
+        "related_terms": ["MongoDB", "Redis", "Cassandra", "DynamoDB", "Document Store"],
+        "proficiency_indicators": {
+          "beginner": ["basic operations", "document structure"],
+          "intermediate": ["aggregation", "indexing", "replication"],
+          "advanced": ["sharding", "performance optimization"],
+          "expert": ["architecture design", "scaling strategies"]
+        }
+      }
+    ],
+    "cloud_platforms": [
+      {
+        "onet_code": "2.B.3.a",
+        "name": "AWS",
+        "category": "TECHNICAL",
+        "subcategory": "Cloud Computing",
+        "description": "Amazon Web Services cloud platform",
+        "related_terms": ["EC2", "S3", "Lambda", "RDS", "CloudFormation", "DevOps"],
+        "proficiency_indicators": {
+          "beginner": ["basic services", "EC2", "S3"],
+          "intermediate": ["multiple services", "IAM", "networking"],
+          "advanced": ["architecture design", "cost optimization", "security"],
+          "expert": ["enterprise solutions", "migration strategies", "team leadership"]
+        }
+      },
+      {
+        "onet_code": "2.B.3.b",
+        "name": "Docker",
+        "category": "TECHNICAL",
+        "subcategory": "DevOps",
+        "description": "Containerization platform",
+        "related_terms": ["Kubernetes", "Container", "Microservices", "DevOps"],
+        "proficiency_indicators": {
+          "beginner": ["basic containers", "Dockerfile"],
+          "intermediate": ["docker-compose", "networking", "volumes"],
+          "advanced": ["orchestration", "Kubernetes", "production deployment"],
+          "expert": ["architecture design", "scaling", "security"]
+        }
+      }
+    ]
+  },
+  "soft_skills": {
+    "communication": [
+      {
+        "onet_code": "4.A.4.a",
+        "name": "Written Communication",
+        "category": "SOFT",
+        "subcategory": "Communication",
+        "description": "Ability to communicate effectively in writing",
+        "related_terms": ["Documentation", "Technical Writing", "Email", "Reports"],
+        "proficiency_indicators": {
+          "beginner": ["basic emails", "simple documentation"],
+          "intermediate": ["technical documentation", "presentations"],
+          "advanced": ["complex reports", "stakeholder communication"],
+          "expert": ["strategic communication", "thought leadership"]
+        }
+      },
+      {
+        "onet_code": "4.A.4.b",
+        "name": "Verbal Communication",
+        "category": "SOFT",
+        "subcategory": "Communication",
+        "description": "Ability to communicate effectively verbally",
+        "related_terms": ["Presentations", "Meetings", "Public Speaking", "Collaboration"],
+        "proficiency_indicators": {
+          "beginner": ["team meetings", "basic presentations"],
+          "intermediate": ["client presentations", "training sessions"],
+          "advanced": ["conference speaking", "stakeholder management"],
+          "expert": ["thought leadership", "executive communication"]
+        }
+      }
+    ],
+    "leadership": [
+      {
+        "onet_code": "4.A.2.b",
+        "name": "Team Leadership",
+        "category": "SOFT",
+        "subcategory": "Leadership",
+        "description": "Ability to lead and manage teams effectively",
+        "related_terms": ["Management", "Mentoring", "Project Management", "Team Building"],
+        "proficiency_indicators": {
+          "beginner": ["small team leadership", "basic delegation"],
+          "intermediate": ["cross-functional teams", "performance management"],
+          "advanced": ["strategic leadership", "organizational change"],
+          "expert": ["executive leadership", "transformation"]
+        }
+      },
+      {
+        "onet_code": "4.A.2.a",
+        "name": "Project Management",
+        "category": "SOFT",
+        "subcategory": "Leadership",
+        "description": "Planning, executing, and managing projects",
+        "related_terms": ["Agile", "Scrum", "Planning", "Risk Management", "Stakeholder Management"],
+        "proficiency_indicators": {
+          "beginner": ["basic project planning", "task management"],
+          "intermediate": ["agile methodologies", "risk assessment"],
+          "advanced": ["complex project delivery", "stakeholder management"],
+          "expert": ["program management", "strategic planning"]
+        }
+      }
+    ]
+  },
+  "industry_specific": {
+    "finance": [
+      {
+        "onet_code": "5.A.1.a",
+        "name": "Financial Analysis",
+        "category": "INDUSTRY_SPECIFIC",
+        "subcategory": "Finance",
+        "description": "Analysis of financial data and markets",
+        "related_terms": ["Excel", "Financial Modeling", "Valuation", "Risk Assessment"],
+        "proficiency_indicators": {
+          "beginner": ["basic financial statements", "Excel formulas"],
+          "intermediate": ["financial modeling", "ratio analysis"],
+          "advanced": ["complex valuations", "risk modeling"],
+          "expert": ["strategic financial planning", "M&A analysis"]
+        }
+      }
+    ],
+    "marketing": [
+      {
+        "onet_code": "5.B.1.a",
+        "name": "Digital Marketing",
+        "category": "INDUSTRY_SPECIFIC",
+        "subcategory": "Marketing",
+        "description": "Online marketing strategies and execution",
+        "related_terms": ["SEO", "SEM", "Social Media", "Analytics", "Content Marketing"],
+        "proficiency_indicators": {
+          "beginner": ["social media posting", "basic SEO"],
+          "intermediate": ["campaign management", "analytics"],
+          "advanced": ["strategy development", "ROI optimization"],
+          "expert": ["omnichannel strategy", "marketing transformation"]
+        }
+      }
+    ]
+  },
+  "certifications": [
+    {
+      "name": "AWS Certified Solutions Architect",
+      "category": "CERTIFICATION",
+      "subcategory": "Cloud Computing",
+      "issuer": "Amazon Web Services",
+      "related_skills": ["AWS", "Cloud Architecture", "System Design"]
+    },
+    {
+      "name": "PMP",
+      "category": "CERTIFICATION",
+      "subcategory": "Project Management",
+      "issuer": "Project Management Institute",
+      "related_skills": ["Project Management", "Leadership", "Risk Management"]
+    },
+    {
+      "name": "Certified Scrum Master",
+      "category": "CERTIFICATION",
+      "subcategory": "Agile",
+      "issuer": "Scrum Alliance",
+      "related_skills": ["Agile", "Scrum", "Team Leadership", "Project Management"]
+    }
+  ],
+  "skill_matching_rules": {
+    "fuzzy_matching": {
+      "threshold": 0.8,
+      "algorithms": ["levenshtein", "jaro_winkler", "cosine_similarity"]
+    },
+    "synonym_groups": {
+      "javascript": ["js", "ecmascript", "node", "nodejs"],
+      "artificial_intelligence": ["ai", "machine learning", "ml", "deep learning", "neural networks"],
+      "user_experience": ["ux", "user interface", "ui", "design", "usability"],
+      "search_engine_optimization": ["seo", "search optimization", "google optimization"],
+      "customer_relationship_management": ["crm", "salesforce", "customer management"]
+    },
+    "context_keywords": {
+      "leadership": ["led", "managed", "supervised", "directed", "coordinated"],
+      "development": ["built", "developed", "created", "implemented", "designed"],
+      "analysis": ["analyzed", "evaluated", "assessed", "reviewed", "investigated"],
+      "improvement": ["improved", "optimized", "enhanced", "increased", "reduced"]
+    }
+  }
+}

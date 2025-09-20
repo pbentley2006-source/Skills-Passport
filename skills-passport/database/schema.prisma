@@ -1,0 +1,278 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Users and Authentication
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  profile    UserProfile?
+  cvUploads  CvUpload[]
+  sessions   UserSession[]
+
+  @@map("users")
+}
+
+model UserSession {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_sessions")
+}
+
+model UserProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  firstName String?
+  lastName  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+// CV and Skills Data
+model CvUpload {
+  id           String    @id @default(cuid())
+  userId       String
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  filePath     String
+  status       UploadStatus @default(UPLOADED)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parsedCv  ParsedCv?
+  profile   CandidateProfile?
+
+  @@map("cv_uploads")
+}
+
+model ParsedCv {
+  id         String   @id @default(cuid())
+  cvUploadId String   @unique
+  rawText    String
+  parsedData Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  cvUpload CvUpload @relation(fields: [cvUploadId], references: [id], onDelete: Cascade)
+
+  @@map("parsed_cvs")
+}
+
+model CandidateProfile {
+  id                String   @id @default(cuid())
+  cvUploadId        String   @unique
+  candidateId       String   @unique // Anonymized ID like "CANDIDATE_001"
+  professionalSummary String?
+  anonymizedData    Json
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  cvUpload         CvUpload           @relation(fields: [cvUploadId], references: [id], onDelete: Cascade)
+  skills           CandidateSkill[]
+  workExperiences  WorkExperience[]
+  achievements     Achievement[]
+  qualifications   Qualification[]
+
+  @@map("candidate_profiles")
+}
+
+// Skills and Taxonomy
+model Skill {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  category    SkillCategory
+  description String?
+  onetCode    String?     // O*NET skill code if available
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Relations
+  candidateSkills     CandidateSkill[]
+  taxonomyMappings    SkillTaxonomyMapping[]
+
+  @@map("skills")
+}
+
+model CandidateSkill {
+  id                String   @id @default(cuid())
+  candidateProfileId String
+  skillId           String
+  proficiencyLevel  Int      // 1-5 scale
+  yearsExperience   Float?
+  context           String?  // Where/how this skill was used
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  candidateProfile CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+  skill            Skill            @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([candidateProfileId, skillId])
+  @@map("candidate_skills")
+}
+
+model WorkExperience {
+  id                 String   @id @default(cuid())
+  candidateProfileId String
+  anonymizedCompany  String   // "Company A", "Company B", etc.
+  position           String
+  startDate          String   // Kept as string for flexibility
+  endDate            String?
+  responsibilities   String[]
+  achievements       String[]
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Relations
+  candidateProfile CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+
+  @@map("work_experiences")
+}
+
+model Achievement {
+  id                 String   @id @default(cuid())
+  candidateProfileId String
+  title              String
+  description        String
+  impact             String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Relations
+  candidateProfile CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+
+  @@map("achievements")
+}
+
+model Qualification {
+  id                 String   @id @default(cuid())
+  candidateProfileId String
+  type               QualificationType
+  title              String
+  anonymizedInstitution String? // "University A", "Institution B", etc.
+  field              String?
+  year               String?
+  grade              String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Relations
+  candidateProfile CandidateProfile @relation(fields: [candidateProfileId], references: [id], onDelete: Cascade)
+
+  @@map("qualifications")
+}
+
+// Anonymization Tracking
+model AnonymizationMapping {
+  id           String   @id @default(cuid())
+  originalValue String
+  anonymizedValue String
+  type         MappingType
+  createdAt    DateTime @default(now())
+
+  @@unique([originalValue, type])
+  @@map("anonymization_mappings")
+}
+
+model CompanyMapping {
+  id              String   @id @default(cuid())
+  originalName    String   @unique
+  anonymizedName  String   @unique // "Company A", "Company B", etc.
+  industry        String?
+  size            String?
+  createdAt       DateTime @default(now())
+
+  @@map("company_mappings")
+}
+
+// O*NET Integration
+model OnetSkill {
+  id          String   @id @default(cuid())
+  onetCode    String   @unique
+  title       String
+  description String?
+  category    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  taxonomyMappings SkillTaxonomyMapping[]
+
+  @@map("onet_skills")
+}
+
+model SkillTaxonomyMapping {
+  id         String   @id @default(cuid())
+  skillId    String
+  onetSkillId String
+  confidence Float    // 0.0 - 1.0 mapping confidence
+  createdAt  DateTime @default(now())
+
+  // Relations
+  skill     Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  onetSkill OnetSkill @relation(fields: [onetSkillId], references: [id], onDelete: Cascade)
+
+  @@unique([skillId, onetSkillId])
+  @@map("skill_taxonomy_mappings")
+}
+
+// Enums
+enum UploadStatus {
+  UPLOADED
+  PROCESSING
+  PARSED
+  FAILED
+}
+
+enum SkillCategory {
+  TECHNICAL
+  SOFT
+  LANGUAGE
+  INDUSTRY_SPECIFIC
+  CERTIFICATION
+}
+
+enum QualificationType {
+  DEGREE
+  CERTIFICATION
+  COURSE
+  TRAINING
+}
+
+enum MappingType {
+  COMPANY
+  INSTITUTION
+  LOCATION
+  PROJECT
+}
