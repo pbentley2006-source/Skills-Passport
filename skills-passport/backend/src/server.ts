@@ -7,7 +7,7 @@ import path from 'path';
 
 import { errorHandler } from './middleware/errorHandler';
 import { logger } from './utils/logger';
-import authRoutes from './routes/auth';
+import { authRoutes } from './routes/auth';
 import cvRoutes from './routes/cvs';
 import userRoutes from './routes/users';
 import skillsRoutes from './routes/skills';

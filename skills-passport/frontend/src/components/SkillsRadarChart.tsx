@@ -108,14 +108,37 @@ const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
 
   if (radarData.length === 0) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">{title}</h3>
-        <div className="flex items-center justify-center h-64 text-gray-500">
-          <div className="text-center">
-            <svg className="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div style={{ 
+        backgroundColor: 'white', 
+        borderRadius: '8px', 
+        border: '1px solid #e5e7eb', 
+        padding: '24px',
+        boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+      }}>
+        <h3 style={{ 
+          fontSize: '18px', 
+          fontWeight: '600', 
+          color: '#111827', 
+          marginBottom: '16px',
+          margin: '0 0 16px 0'
+        }}>{title}</h3>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          height: '256px', 
+          color: '#6b7280' 
+        }}>
+          <div style={{ textAlign: 'center' }}>
+            <svg style={{ 
+              margin: '0 auto 16px auto', 
+              height: '48px', 
+              width: '48px', 
+              color: '#9ca3af' 
+            }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            <p className="text-sm">No skills data available</p>
+            <p style={{ fontSize: '14px' }}>No skills data available</p>
           </div>
         </div>
       </div>
@@ -123,8 +146,20 @@ const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">{title}</h3>
+    <div style={{ 
+      backgroundColor: 'white', 
+      borderRadius: '8px', 
+      border: '1px solid #e5e7eb', 
+      padding: '24px',
+      boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+    }}>
+      <h3 style={{ 
+        fontSize: '18px', 
+        fontWeight: '600', 
+        color: '#111827', 
+        marginBottom: '16px',
+        margin: '0 0 16px 0'
+      }}>{title}</h3>
       
       <ResponsiveContainer width="100%" height={height}>
         <RadarChart data={radarData} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
@@ -163,16 +198,35 @@ const SkillsRadarChart: React.FC<SkillsRadarChartProps> = ({
       </ResponsiveContainer>
 
       {/* Skills Summary */}
-      <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div style={{ 
+        marginTop: '24px', 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
+        gap: '16px' 
+      }}>
         {radarData.map((category, index) => (
-          <div key={index} className="text-center">
-            <div className="text-2xl font-bold text-primary-600">
+          <div key={index} style={{ textAlign: 'center' }}>
+            <div style={{ 
+              fontSize: '24px', 
+              fontWeight: 'bold', 
+              color: '#3b82f6',
+              marginBottom: '4px'
+            }}>
               {category.proficiency}
             </div>
-            <div className="text-xs text-gray-500 uppercase tracking-wide">
+            <div style={{ 
+              fontSize: '12px', 
+              color: '#6b7280', 
+              textTransform: 'uppercase', 
+              letterSpacing: '0.05em',
+              marginBottom: '2px'
+            }}>
               {category.category}
             </div>
-            <div className="text-xs text-gray-400">
+            <div style={{ 
+              fontSize: '12px', 
+              color: '#9ca3af' 
+            }}>
               {category.skillCount} skills
             </div>
           </div>

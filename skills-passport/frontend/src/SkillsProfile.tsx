@@ -3,6 +3,7 @@ import SkillsRadarChart from './components/SkillsRadarChart';
 import SkillsBreakdown from './components/SkillsBreakdown';
 import SkillsGapAnalysis from './components/SkillsGapAnalysis';
 import MarketInsightsDashboard from './components/MarketInsightsDashboard';
+import SimpleSkillsTable from './components/SimpleSkillsTable';
 
 interface SkillsProfileProps {
   onBack: () => void;
@@ -15,6 +16,7 @@ interface Skill {
   yearsExperience?: number;
   confidence?: number;
   onetCode?: string;
+  proficiencyLevel?: number; // For technical skills
 }
 
 
@@ -57,7 +59,7 @@ const SkillsProfile: React.FC<SkillsProfileProps> = ({ onBack }) => {
         return;
       }
 
-      const response = await fetch(`/api/skills/${uploadId}`, {
+      const response = await fetch(`/api/cvs/${uploadId}/skills`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -67,10 +69,29 @@ const SkillsProfile: React.FC<SkillsProfileProps> = ({ onBack }) => {
         const result = await response.json();
         console.log('✅ Fetched skills data:', result.data);
         
-        if (result.data) {
-          setSkills(result.data.technicalSkills || []);
-          setExperienceData(result.data.experience || []);
-          setSummary(result.data.summary || null);
+        if (result.data && result.data.skills) {
+          // Combine technical and soft skills with proper field mapping
+          const technicalSkills = (result.data.skills.technicalSkills || []).map((skill: any) => ({
+            ...skill,
+            level: skill.proficiencyLevel // Map proficiencyLevel to level for consistency
+          }));
+          
+          const softSkills = (result.data.skills.softSkills || []).map((skill: any) => ({
+            ...skill,
+            category: skill.category || 'Soft Skills', // Ensure category exists
+            proficiencyLevel: skill.level // Map level to proficiencyLevel for consistency
+          }));
+          
+          // Combine all skills
+          const allSkills = [...technicalSkills, ...softSkills];
+          
+          console.log('🔍 Combined skills data:', allSkills);
+          console.log('📊 Technical skills count:', technicalSkills.length);
+          console.log('📊 Soft skills count:', softSkills.length);
+          
+          setSkills(allSkills);
+          setExperienceData(result.data.skills.experience || []);
+          setSummary(result.data.skills.summary || null);
         }
       } else {
         console.log('❌ API call failed, using demo data');
@@ -517,13 +538,21 @@ const SkillsProfile: React.FC<SkillsProfileProps> = ({ onBack }) => {
               skills={skills.map(skill => ({
                 name: skill.name,
                 category: skill.category,
-                proficiencyLevel: skill.level / 20, // Convert 0-100 to 0-5 scale
+                proficiencyLevel: (skill.proficiencyLevel || skill.level) / 20, // Convert 0-100 to 0-5 scale
                 yearsExperience: skill.yearsExperience
               }))}
               title="Skills Radar Analysis"
               height={400}
               maxValue={5}
               showLegend={true}
+            />
+          </div>
+
+          {/* Skills Data Table */}
+          <div style={{ marginTop: '24px' }}>
+            <SimpleSkillsTable 
+              skills={skills}
+              title="Detailed Skills Analysis"
             />
           </div>
 

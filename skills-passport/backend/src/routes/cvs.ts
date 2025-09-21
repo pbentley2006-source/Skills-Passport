@@ -68,8 +68,8 @@ router.post('/upload', authenticateToken, upload.single('cv'), async (req, res) 
       data: {
         userId,
         filename: processedFile.originalName,
-        originalFilename: processedFile.originalName,
-        fileSize: processedFile.size,
+        originalName: processedFile.originalName,
+        size: processedFile.size,
         mimeType: processedFile.mimetype,
         filePath: processedFile.path,
         status: 'UPLOADED'
@@ -125,7 +125,7 @@ router.get('/user/uploads', authenticateToken, async (req, res) => {
           }
         }
       },
-      orderBy: { uploadedAt: 'desc' }
+      orderBy: { createdAt: 'desc' }
     });
 
     res.json({
@@ -180,7 +180,7 @@ router.get('/:uploadId/status', authenticateToken, async (req, res) => {
         id: upload.id,
         filename: upload.filename,
         status: upload.status,
-        uploadedAt: upload.uploadedAt,
+        uploadedAt: upload.createdAt,
         profile: upload.profile
       }
     });
@@ -212,8 +212,9 @@ router.get('/:uploadId/profile', authenticateToken, async (req, res) => {
         profile: {
           include: {
             skills: true,
-            experience: true,
-            education: true
+            workExperiences: true,
+            qualifications: true,
+            achievements: true
           }
         }
       }
@@ -319,47 +320,78 @@ async function processCV(uploadId: string, cvText: string): Promise<void> {
     // Create candidate profile
     const profile = await prisma.candidateProfile.create({
       data: {
+        cvUploadId: uploadId,
         candidateId: `ANON_${Date.now()}`,
-        anonymizedCV,
-        rawSkillsData: JSON.stringify(extractedData),
-        careerInsights: JSON.stringify(careerInsights),
-        totalExperience: extractedData.summary.totalExperience,
-        seniority: extractedData.summary.seniority,
-        primaryDomain: extractedData.summary.primaryDomain
+        anonymizedData: JSON.stringify({
+          anonymizedCV,
+          rawSkillsData: extractedData,
+          careerInsights: careerInsights
+        }),
+        professionalSummary: extractedData.summary ? `${extractedData.summary.totalExperience} years experience in ${extractedData.summary.primaryDomain}` : null
       }
     });
 
     // Create skills records
-    for (const skill of extractedData.technicalSkills) {
-      await prisma.skill.create({
+    for (const skill of extractedData.technicalSkills || []) {
+      // Find or create the skill in the global skills table
+      let skillRecord = await prisma.skill.findFirst({
+        where: { name: skill.name }
+      });
+      
+      if (!skillRecord) {
+        skillRecord = await prisma.skill.create({
+          data: {
+            name: skill.name,
+            category: skill.category || 'TECHNICAL',
+            description: `Technical skill: ${skill.name}`
+          }
+        });
+      }
+      
+      // Create the candidate-skill relationship
+      await prisma.candidateSkill.create({
         data: {
-          profileId: profile.id,
-          name: skill.name,
-          category: skill.category,
-          proficiencyLevel: skill.proficiencyLevel,
-          yearsExperience: skill.yearsExperience,
-          type: 'TECHNICAL'
+          candidateProfileId: profile.id,
+          skillId: skillRecord.id,
+          proficiencyLevel: skill.proficiencyLevel || 3,
+          yearsExperience: skill.yearsExperience || 0,
+          context: `Technical skill from CV`
         }
       });
     }
 
-    for (const skill of extractedData.softSkills) {
-      await prisma.skill.create({
+    for (const skill of extractedData.softSkills || []) {
+      // Find or create the skill in the global skills table
+      let skillRecord = await prisma.skill.findFirst({
+        where: { name: skill.name }
+      });
+      
+      if (!skillRecord) {
+        skillRecord = await prisma.skill.create({
+          data: {
+            name: skill.name,
+            category: 'SOFT',
+            description: `Soft skill: ${skill.name}`
+          }
+        });
+      }
+      
+      // Create the candidate-skill relationship
+      await prisma.candidateSkill.create({
         data: {
-          profileId: profile.id,
-          name: skill.name,
-          proficiencyLevel: skill.level,
-          type: 'SOFT'
+          candidateProfileId: profile.id,
+          skillId: skillRecord.id,
+          proficiencyLevel: skill.level || 3,
+          context: `Soft skill from CV`
         }
       });
     }
 
-    // Update CV upload with profile reference and status
+    // Update CV upload status
     await prisma.cvUpload.update({
       where: { id: uploadId },
       data: {
-        status: 'PARSED',
-        profileId: profile.id
+        status: 'PARSED'
       }
     });
 
